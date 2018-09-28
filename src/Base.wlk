@@ -1,13 +1,21 @@
 import hechizos.*
 import lucha.*
 
-object personaje {
+class Personaje {
 
-	var baseHechicheria = 3
+	var baseHechicheria
 	var hechizoPreferido
-	var valorFuerzaOscura = 5
-	var baseLucha = 1
-	var artefactos = new List()
+	var valorFuerzaOscura
+	var baseLucha
+	var artefactos
+
+	constructor(_hechizoPreferido){
+		baseHechicheria = 3
+		hechizoPreferido = _hechizoPreferido
+		valorFuerzaOscura = 5
+		baseLucha = 1
+		artefactos = new List()
+	}
 
 	method nivelHechiceria() {
 		return (baseHechicheria * hechizoPreferido.poder()) + valorFuerzaOscura
