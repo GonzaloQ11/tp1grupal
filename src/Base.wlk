@@ -5,11 +5,11 @@ class Personaje {
 
 	var baseHechicheria
 	var hechizoPreferido
-	var valorFuerzaOscura
-	var baseLucha
-	var artefactos
+	var property valorFuerzaOscura
+	var property baseLucha
+	var property artefactos
 
-	constructor(_hechizoPreferido){
+	constructor(_hechizoPreferido) {
 		baseHechicheria = 3
 		hechizoPreferido = _hechizoPreferido
 		valorFuerzaOscura = 5
@@ -42,25 +42,18 @@ class Personaje {
 	method eliminarArtefacto(artefacto) {
 		artefactos.remove(artefacto)
 	}
+	
+	method eliminarTodosLosArtefactos() = self.artefactos().clear()
 
-	method mayorHabilidadDeLuchaQueHechiceria() {
-		return self.valorDeLucha() > self.nivelHechiceria()
-	}
-
-	// ME QUEDE ACA
 	method valorDeLucha() {
 		var valorDeLucha = self.baseLucha()
-		artefactos.forEach()
+		valorDeLucha += artefactos.sum({ artefacto => artefacto.unidadesDeLucha(self) })
 		return valorDeLucha
 	}
-
-	// GETTER AND SETTER
-	method baseLucha() {
-		return baseLucha
-	}
-
-	method baseLucha(_baseLucha) {
-		baseLucha = _baseLucha
+	
+	// CAMBIAR NOMBRE
+	method mayorHabilidadDeLuchaQueHechiceria() {
+		return self.valorDeLucha() > self.nivelHechiceria()
 	}
 
 }

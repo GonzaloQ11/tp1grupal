@@ -37,6 +37,5 @@ describe "Tests de Hechiceria" {
 	test "hechizo basico no es poderoso" {
 		assert.notThat(hechizoBasico.esPoderoso())
 	}
-
+	
 }
-

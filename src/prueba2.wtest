@@ -1,0 +1,60 @@
+import Base.*
+import hechizos.*
+import lucha.*
+
+describe "Tests de Lucha" {
+
+	const rolando = new Personaje(espectroMalefico)
+
+	fixture {
+		rolando.agregarArtefacto(espada)
+		collarDivino.cantidadDePerlas(5)
+		rolando.agregarArtefacto(collarDivino)
+		mascaraOscura.indiceDeOscuridad(1)
+		mascaraOscura.minimoDePoder(4)
+		rolando.agregarArtefacto(mascaraOscura)
+	}
+
+	test "eliminar Todos los artefactos" {
+		rolando.eliminarTodosLosArtefactos()
+		assert.equals(1, rolando.valorDeLucha())
+	}
+
+	test "habilidad de lucha" {
+		assert.equals(13, rolando.valorDeLucha())
+	}
+
+	test "collar de 3 perlas" {
+		collarDivino.cantidadDePerlas(3)
+		assert.equals(11, rolando.valorDeLucha())
+	}
+
+	test "base de lucha 8" {
+		rolando.baseLucha(8)
+		assert.equals(20, rolando.valorDeLucha())
+	}
+
+	test "valor de la mascara cuando ocurre un eclipse" {
+		rolando.eclipse()
+		assert.equals(5, mascaraOscura.unidadesDeLucha(rolando))
+	}
+
+	test "eliminar mascara" {
+		rolando.eliminarArtefacto(mascaraOscura)
+		assert.equals(9, rolando.valorDeLucha())
+	}
+
+	//
+	test "mascara no oscura" {
+		mascaraOscura.indiceDeOscuridad(0)
+		assert.equals(4, mascaraOscura.unidadesDeLucha(rolando))
+	}
+
+	test "mascara no oscura con minimo 2" {
+		mascaraOscura.indiceDeOscuridad(0)
+		mascaraOscura.minimoDePoder(2)
+		assert.equals(2, mascaraOscura.unidadesDeLucha(rolando))
+	}
+
+}
+
