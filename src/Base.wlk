@@ -55,6 +55,8 @@ class Personaje {
 	method mayorHabilidadDeLuchaQueHechiceria() {
 		return self.valorDeLucha() > self.nivelHechiceria()
 	}
-
+	
+	method estaCargado() = self.artefactos().size()>=5
+	
 }
 
