@@ -1,7 +1,7 @@
 object espectroMalefico {
 
 	// Dejar poder como var?
-	var nombre = "Espectro malefico"
+	var property nombre = "Espectro malefico"
 
 	method poder() {
 		return self.nombre().length()
@@ -9,15 +9,6 @@ object espectroMalefico {
 
 	method esPoderoso() {
 		return self.poder() > 15
-	}
-
-	// GETTER AND SETTER	
-	method nombre() {
-		return nombre
-	}
-
-	method nombre(_nombre) {
-		nombre = _nombre
 	}
 
 }

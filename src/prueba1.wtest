@@ -1,0 +1,42 @@
+import Base.*
+import hechizos.*
+import lucha.*
+
+describe "Tests de Hechiceria" {
+
+	const rolando = new Personaje(espectroMalefico)
+
+	test "nivel de hechiceria de rolando" {
+		assert.equals(56, rolando.nivelHechiceria())
+	}
+
+	test "espectro superrecontramalefico muajajaja" {
+		espectroMalefico.nombre("espectro superrecontramalefico muajajaja")
+		assert.equals(125, rolando.nivelHechiceria())
+	}
+
+	test "hechizo basico" {
+		rolando.hechizoPreferido(hechizoBasico)
+		assert.equals(35, rolando.nivelHechiceria())
+	}
+
+	test "eclipse" {
+		rolando.eclipse()
+		assert.equals(61, rolando.nivelHechiceria())
+	}
+
+	test "espectro malefico poderoso" {
+		assert.that(espectroMalefico.esPoderoso())
+	}
+
+	test "espectro malefico es pepe" {
+		espectroMalefico.nombre("pepe")
+		assert.notThat(espectroMalefico.esPoderoso())
+	}
+
+	test "hechizo basico no es poderoso" {
+		assert.notThat(hechizoBasico.esPoderoso())
+	}
+
+}
+
