@@ -42,7 +42,7 @@ class Personaje {
 	method eliminarArtefacto(artefacto) {
 		artefactos.remove(artefacto)
 	}
-	
+
 	method eliminarTodosLosArtefactos() = self.artefactos().clear()
 
 	method valorDeLucha() {
@@ -50,13 +50,13 @@ class Personaje {
 		valorDeLucha += artefactos.sum({ artefacto => artefacto.unidadesDeLucha(self) })
 		return valorDeLucha
 	}
-	
+
 	// CAMBIAR NOMBRE
 	method mayorHabilidadDeLuchaQueHechiceria() {
 		return self.valorDeLucha() > self.nivelHechiceria()
 	}
-	
-	method estaCargado() = self.artefactos().size()>=5
-	
+
+	method estaCargado() = self.artefactos().size() >= 5
+
 }
 

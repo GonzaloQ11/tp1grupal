@@ -15,37 +15,24 @@ object espectroMalefico {
 
 class Logos {
 
-	var nombre
-	var amplificadorDePoder
+	var property nombre
+	var property amplificadorDePoder
 
 	/*  PARTE DEL ENUNCIADO NO ENTENDIDO
 	 *  "El poder de hechicería es un múltiplo de la 
 	 *   cantidad de letras de su nombre, 
 	 *   donde el valor por el cual se multiplica 
 	 puede variar de hechizo en hechizo" */
+	constructor(_nombre) {
+		nombre = _nombre
+	}
+
 	method poder() {
 		return self.nombre().length() * self.amplificadorDePoder()
 	}
 
 	method esPoderoso() {
 		return self.poder() > 15
-	}
-
-	// GETTERS AND SETTERS
-	method nombre() {
-		return nombre
-	}
-
-	method nombre(_nombre) {
-		nombre = _nombre
-	}
-
-	method amplificadorDePoder() {
-		return amplificadorDePoder
-	}
-
-	method amplificadorDePoder(_amplificadorDePoder) {
-		amplificadorDePoder = _amplificadorDePoder
 	}
 
 }

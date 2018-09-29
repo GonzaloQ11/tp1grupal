@@ -1,10 +1,12 @@
 import Base.*
 import hechizos.*
 import lucha.*
+import habilidadesAvanzadas.*
 
 describe "Tests de Habilidades Avanzadas" {
 
 	const rolando = new Personaje(espectroMalefico)
+	const armaduraSinRefuerzo = new Armadura(2, sinRefuerzo)
 
 	fixture {
 		rolando.agregarArtefacto(espada)
@@ -13,48 +15,46 @@ describe "Tests de Habilidades Avanzadas" {
 		mascaraOscura.indiceDeOscuridad(1)
 		mascaraOscura.minimoDePoder(4)
 		rolando.agregarArtefacto(mascaraOscura)
-		rolando.agregarArtefacto(new Armadura())
+		rolando.agregarArtefacto(armaduraSinRefuerzo)
+		rolando.agregarArtefacto(espejo)
 	}
 
-	test "eliminar Todos los artefactos" {
+	test "rolando esta cargado" {
+		assert.that(rolando.estaCargado())
+	}
+
+	test "rolando esta cargado sin armadura" {
+		rolando.eliminarArtefacto(armaduraSinRefuerzo)
+		assert.notThat(rolando.estaCargado())
+	}
+
+	test "habilidad de lucha de rolando" {
+		assert.equals(20, rolando.valorDeLucha())
+	}
+
+	test "valor de lucha con hechizo de bendicion" {
+		refuerzoHechizo.hechizo(espectroMalefico)
+		armaduraSinRefuerzo.refuerzo(refuerzoHechizo)
+		assert.equals(19, armaduraSinRefuerzo.unidadesDeLucha(rolando))
+	}
+
+	test "sin artefactos" {
 		rolando.eliminarTodosLosArtefactos()
 		assert.equals(1, rolando.valorDeLucha())
 	}
 
-	test "habilidad de lucha" {
-		assert.equals(13, rolando.valorDeLucha())
+	test "hechiceria logos" {
+		const espectroMalefico = new Logos("espectro malefico")
+		libroDeHechizos.agregarHechizo(espectroMalefico)
+		libroDeHechizos.agregarHechizo(hechizoBasico)
+		assert.equals(56, rolando.nivelHechiceria())
 	}
 
-	test "collar de 3 perlas" {
-		collarDivino.cantidadDePerlas(3)
-		assert.equals(11, rolando.valorDeLucha())
-	}
-
-	test "base de lucha 8" {
-		rolando.baseLucha(8)
-		assert.equals(20, rolando.valorDeLucha())
-	}
-
-	test "valor de la mascara cuando ocurre un eclipse" {
-		rolando.eclipse()
-		assert.equals(5, mascaraOscura.unidadesDeLucha(rolando))
-	}
-
-	test "eliminar mascara" {
-		rolando.eliminarArtefacto(mascaraOscura)
-		assert.equals(9, rolando.valorDeLucha())
-	}
-
-	//
-	test "mascara no oscura" {
-		mascaraOscura.indiceDeOscuridad(0)
-		assert.equals(4, mascaraOscura.unidadesDeLucha(rolando))
-	}
-
-	test "mascara no oscura con minimo 2" {
-		mascaraOscura.indiceDeOscuridad(0)
-		mascaraOscura.minimoDePoder(2)
-		assert.equals(2, mascaraOscura.unidadesDeLucha(rolando))
+	test "armadura extra" {
+		cotaDeMalla.calidad(6)
+		const armaduraExtra = new Armadura(5, cotaDeMalla)
+		rolando.agregarArtefacto(armaduraExtra)
+		assert.equals(37, rolando.valorDeLucha())
 	}
 
 }

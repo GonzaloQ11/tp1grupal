@@ -1,3 +1,7 @@
+import Base.*
+import hechizos.*
+import lucha.*
+
 class Armadura {
 
 	var property valorBase
@@ -8,7 +12,9 @@ class Armadura {
 		refuerzo = _refuerzo
 	}
 
-	method unidadesDeLucha(personaje) = self.valorBase() + self.refuerzo().unidadesDeLucha(personaje)
+	method unidadesDeLucha(personaje) {
+		return valorBase + refuerzo.unidadesDeLucha(personaje)
+	}
 
 }
 
@@ -26,7 +32,7 @@ object bendicion {
 
 }
 
-object hechizo {
+object refuerzoHechizo {
 
 	var property hechizo
 
@@ -34,15 +40,25 @@ object hechizo {
 
 }
 
+object sinRefuerzo {
+
+	method unidadesDeLucha(personaje) = 0
+
+}
+
 object espejo {
 
-	method unidadesDeLucha(personaje) = personaje.artefactos().max({ artefacto => artefacto.unidadesDeLucha(personaje) })
+	method artefactosSinEspejo(personaje) = personaje.artefactos().filter({ artefacto => artefacto != self })
+
+	method maximoObjeto(personaje) = self.artefactosSinEspejo(personaje).max({ artefacto => artefacto.unidadesDeLucha(personaje) })
+
+	method unidadesDeLucha(personaje) = self.maximoObjeto(personaje).unidadesDeLucha(personaje)
 
 }
 
 object libroDeHechizos {
 
-	var listaDeHechizos
+	var property listaDeHechizos = new List()
 
 	method agregarHechizo(hechizo) {
 		listaDeHechizos.add(hechizo)
@@ -50,6 +66,11 @@ object libroDeHechizos {
 
 	method eliminarHechizo(hechizo) {
 		listaDeHechizos.remove(hechizo)
+	}
+
+	method poder() {
+		var hechizosPoderosos = listaDeHechizos.filter({ hechizo => !hechizo.esPoderoso() })
+		return hechizosPoderosos.sum({ hechizo => hechizo.poder() })
 	}
 
 }
