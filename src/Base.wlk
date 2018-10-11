@@ -3,26 +3,20 @@ import lucha.*
 
 class Personaje {
 
-	var baseHechicheria
+	const baseHechicheria
 	var hechizoPreferido
-	var property valorFuerzaOscura
 	var property baseLucha
 	var property artefactos
 
 	constructor(_hechizoPreferido) {
 		baseHechicheria = 3
 		hechizoPreferido = _hechizoPreferido
-		valorFuerzaOscura = 5
 		baseLucha = 1
 		artefactos = new List()
 	}
 
 	method nivelHechiceria() {
-		return (baseHechicheria * hechizoPreferido.poder()) + valorFuerzaOscura
-	}
-
-	method eclipse() {
-		valorFuerzaOscura = valorFuerzaOscura * 2
+		return (baseHechicheria * hechizoPreferido.poder()) + fuerzaOscura.valor()
 	}
 
 	method esPoderoso() {
@@ -51,12 +45,21 @@ class Personaje {
 		return valorDeLucha
 	}
 
-	// CAMBIAR NOMBRE
-	method mayorHabilidadDeLuchaQueHechiceria() {
+	method especialistaEnLucha() {
 		return self.valorDeLucha() > self.nivelHechiceria()
 	}
 
 	method estaCargado() = self.artefactos().size() >= 5
+
+}
+
+object fuerzaOscura {
+
+	var property valor = 5
+
+	method eclipse() {
+		valor = valor * 2
+	}
 
 }
 

@@ -5,54 +5,73 @@ import habilidadesAvanzadas.*
 
 describe "Tests de Habilidades Avanzadas" {
 
+	const espectroMalefico = new Logos("espectro malefico")
 	const rolando = new Personaje(espectroMalefico)
-	const armaduraSinRefuerzo = new Armadura(2, sinRefuerzo)
+	const armaduraBasica = new Armadura(2, sinRefuerzo)
+	const collarDivinoDe5Perlas = new CollarDivino(5)
+	const mascaraOscura = new MascaraOscura(1, 4)
 
 	fixture {
 		rolando.agregarArtefacto(espada)
-		collarDivino.cantidadDePerlas(5)
-		rolando.agregarArtefacto(collarDivino)
-		mascaraOscura.indiceDeOscuridad(1)
-		mascaraOscura.minimoDePoder(4)
+		rolando.agregarArtefacto(collarDivinoDe5Perlas)
 		rolando.agregarArtefacto(mascaraOscura)
-		rolando.agregarArtefacto(armaduraSinRefuerzo)
+		rolando.agregarArtefacto(armaduraBasica)
 		rolando.agregarArtefacto(espejo)
 	}
 
-	test "rolando esta cargado" {
+	test "Rolando esta cargado" {
 		assert.that(rolando.estaCargado())
 	}
 
-	test "rolando esta cargado sin armadura" {
-		rolando.eliminarArtefacto(armaduraSinRefuerzo)
+	test "Rolando sin armadura no esta cargado" {
+		rolando.eliminarArtefacto(armaduraBasica)
 		assert.notThat(rolando.estaCargado())
 	}
 
-	test "habilidad de lucha de rolando" {
+	test "El valor de lucha de Rolando es de 20" {
 		assert.equals(20, rolando.valorDeLucha())
 	}
 
-	test "valor de lucha con hechizo de bendicion" {
-		refuerzoHechizo.hechizo(espectroMalefico)
-		armaduraSinRefuerzo.refuerzo(refuerzoHechizo)
-		assert.equals(19, armaduraSinRefuerzo.unidadesDeLucha(rolando))
+	test "La habilidad de lucha de la armadura de Rolando con una bendicion de refuerzo es de 58" {
+		armaduraBasica.refuerzo(bendicion)
+		assert.equals(58, armaduraBasica.unidadesDeLucha(rolando))
 	}
 
-	test "sin artefactos" {
+	test "La habilidad de lucha de la armadura de Rolando con una Cota de Malla de refuerzo es de 3" {
+		const cotaDeMallaCalidad1 = new CotaDeMalla(1)
+		armaduraBasica.refuerzo(cotaDeMallaCalidad1)
+		assert.equals(3,armaduraBasica.unidadesDeLucha(rolando))
+	}
+	
+	test "La habilidad de lucha de la armadura de Rolando con un hechiso basico de refuerzo es de 12"{
+		const refuerzoHechizoBasico = new RefuerzoHechizo(hechizoBasico)
+		armaduraBasica.refuerzo(refuerzoHechizoBasico)
+		assert.equals(12,armaduraBasica.unidadesDeLucha(rolando))
+	}
+
+	test "El valor de lucha de Rolando con una armadura con hechizo de bendicion es de 19" {
+		const refuerzoMalefico = new RefuerzoHechizo(espectroMalefico)
+		armaduraBasica.refuerzo(refuerzoMalefico)
+		assert.equals(19, armaduraBasica.unidadesDeLucha(rolando))
+	}
+
+	test "El valor de lucha de Rolando al eliminar todos los Artefactos es de 1" {
 		rolando.eliminarTodosLosArtefactos()
 		assert.equals(1, rolando.valorDeLucha())
 	}
 
-	test "hechiceria logos" {
-		const espectroMalefico = new Logos("espectro malefico")
+	test "El valor de hechiceria de Rolando al cambiar su hechizo preferido 
+	por un libro de hechizos que tiene  un hechizo Logos con nombre espectro malefico 
+	y un hechizo basico es de 56 " {
 		libroDeHechizos.agregarHechizo(espectroMalefico)
 		libroDeHechizos.agregarHechizo(hechizoBasico)
+		rolando.hechizoPreferido(libroDeHechizos)
 		assert.equals(56, rolando.nivelHechiceria())
 	}
 
-	test "armadura extra" {
-		cotaDeMalla.calidad(6)
-		const armaduraExtra = new Armadura(5, cotaDeMalla)
+	test "El valor de lucha de Rolando al agregar una armadura con valor de lucha base de 5 con una Cota de Malla de calidad 6 es de 37" {
+		const cotaDeMallaCalidad6 = new CotaDeMalla(6)
+		const armaduraExtra = new Armadura(5, cotaDeMallaCalidad6)
 		rolando.agregarArtefacto(armaduraExtra)
 		assert.equals(37, rolando.valorDeLucha())
 	}

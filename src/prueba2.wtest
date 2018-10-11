@@ -4,53 +4,53 @@ import lucha.*
 
 describe "Tests de Lucha" {
 
+	const espectroMalefico = new Logos("espectro malefico")
 	const rolando = new Personaje(espectroMalefico)
+	const collarDivinoDe5Perlas = new CollarDivino(5)
+	const mascaraOscura = new MascaraOscura(1, 4)
 
 	fixture {
 		rolando.agregarArtefacto(espada)
-		collarDivino.cantidadDePerlas(5)
-		rolando.agregarArtefacto(collarDivino)
-		mascaraOscura.indiceDeOscuridad(1)
-		mascaraOscura.minimoDePoder(4)
+		rolando.agregarArtefacto(collarDivinoDe5Perlas)
 		rolando.agregarArtefacto(mascaraOscura)
 	}
 
-	test "eliminar Todos los artefactos" {
+	test "El valor de lucha de Rolando al eliminar todos los artefactos es de 1" {
 		rolando.eliminarTodosLosArtefactos()
 		assert.equals(1, rolando.valorDeLucha())
 	}
 
-	test "habilidad de lucha" {
+	test "El valor de lucha de Rolando es de 13" {
 		assert.equals(13, rolando.valorDeLucha())
 	}
 
-	test "collar de 3 perlas" {
-		collarDivino.cantidadDePerlas(3)
+	test "El valor de lucha de Rolando despues de cambiar la cantidad de perlas a 3 es de 11" {
+		collarDivinoDe5Perlas.cantidadDePerlas(3)
 		assert.equals(11, rolando.valorDeLucha())
 	}
 
-	test "base de lucha 8" {
+	test "El valor de lucha de Rolando al cambiar su base de Lucha a 8 es de 20" {
 		rolando.baseLucha(8)
 		assert.equals(20, rolando.valorDeLucha())
 	}
 
-	test "valor de la mascara cuando ocurre un eclipse" {
-		rolando.eclipse()
+	test "Las unidades de lucha de una mascara oscura de Rolando al ocurrir un eclipse es de 5" {
+		fuerzaOscura.eclipse()
 		assert.equals(5, mascaraOscura.unidadesDeLucha(rolando))
 	}
 
-	test "eliminar mascara" {
+	test "El valor de lucha de Rolando al eliminar la mascara oscura es de 9" {
 		rolando.eliminarArtefacto(mascaraOscura)
 		assert.equals(9, rolando.valorDeLucha())
 	}
 
 	//
-	test "mascara no oscura" {
+	test "Las unidades de lucha de una mascara oscura de Rolando al cambiar el indice de oscuridad a 0 es de 4" {
 		mascaraOscura.indiceDeOscuridad(0)
 		assert.equals(4, mascaraOscura.unidadesDeLucha(rolando))
 	}
 
-	test "mascara no oscura con minimo 2" {
+	test "Las unidades de lucha de una mascara oscura de Rolando al cambiar el indice de oscuridad a 0 y el minimo de Poder a 2 es de 2" {
 		mascaraOscura.indiceDeOscuridad(0)
 		mascaraOscura.minimoDePoder(2)
 		assert.equals(2, mascaraOscura.unidadesDeLucha(rolando))

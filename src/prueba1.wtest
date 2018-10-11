@@ -4,38 +4,41 @@ import lucha.*
 
 describe "Tests de Hechiceria" {
 
+	const espectroMalefico = new Logos("espectro malefico")
 	const rolando = new Personaje(espectroMalefico)
 
-	test "nivel de hechiceria de rolando" {
+	test "El nivel de hechiceria de Rolando es de 56" {
 		assert.equals(56, rolando.nivelHechiceria())
 	}
 
-	test "espectro superrecontramalefico muajajaja" {
+	test "El nivel de hechiceria de Rolando cambiando el nombre de espectro malefico por 
+		espectro superrecontramalefico muajajaja es de 125 " {
 		espectroMalefico.nombre("espectro superrecontramalefico muajajaja")
 		assert.equals(125, rolando.nivelHechiceria())
 	}
 
-	test "hechizo basico" {
+	test "El nivel de hechiceria de Rolando cambiando su hechizo preferido por hechizo basico es de 35" {
 		rolando.hechizoPreferido(hechizoBasico)
 		assert.equals(35, rolando.nivelHechiceria())
 	}
 
-	test "eclipse" {
-		rolando.eclipse()
+	test "El nivel de hechiceria de Rolando despues de que ocurra un eclipse es de 61" {
+		fuerzaOscura.eclipse()
 		assert.equals(61, rolando.nivelHechiceria())
 	}
 
-	test "espectro malefico poderoso" {
+	test "El espectro malefico es poderoso" {
 		assert.that(espectroMalefico.esPoderoso())
 	}
 
-	test "espectro malefico es pepe" {
+	test "El espectro malefico con nombre pepe no es poderoso" {
 		espectroMalefico.nombre("pepe")
 		assert.notThat(espectroMalefico.esPoderoso())
 	}
 
-	test "hechizo basico no es poderoso" {
+	test "El hechizo basico no es poderoso" {
 		assert.notThat(hechizoBasico.esPoderoso())
 	}
-	
+
 }
+

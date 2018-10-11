@@ -18,9 +18,13 @@ class Armadura {
 
 }
 
-object cotaDeMalla {
+class CotaDeMalla {
 
 	var property calidad
+
+	constructor(_calidad) {
+		calidad = _calidad
+	}
 
 	method unidadesDeLucha(personaje) = self.calidad()
 
@@ -28,13 +32,17 @@ object cotaDeMalla {
 
 object bendicion {
 
-	method unidadesDeLucha(personaje) = personaje.nivelDeHechiceria()
+	method unidadesDeLucha(personaje) = personaje.nivelHechiceria()
 
 }
 
-object refuerzoHechizo {
+class RefuerzoHechizo {
 
 	var property hechizo
+
+	constructor(_hechizo) {
+		hechizo = _hechizo
+	}
 
 	method unidadesDeLucha(personaje) = hechizo.poder()
 
@@ -69,7 +77,7 @@ object libroDeHechizos {
 	}
 
 	method poder() {
-		var hechizosPoderosos = listaDeHechizos.filter({ hechizo => !hechizo.esPoderoso() })
+		var hechizosPoderosos = listaDeHechizos.filter({ hechizo => hechizo.esPoderoso() })
 		return hechizosPoderosos.sum({ hechizo => hechizo.poder() })
 	}
 

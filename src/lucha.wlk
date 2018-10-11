@@ -1,40 +1,54 @@
 import Base.*
 import hechizos.*
 
+object armasAfiladas {
+
+	method unidadesDeLucha(personaje) = 3
+
+}
+
 object espada {
 
-	// TUVE QUE AÑADIR PERSONAJE COMO PARAMETRO
-	method unidadesDeLucha(personaje) = 3
+	method unidadesDeLucha(personaje) = armasAfiladas.unidadesDeLucha(personaje)
 
 }
 
 object hacha {
 
-	method unidadesDeLucha(personaje) = 3
+	method unidadesDeLucha(personaje) = armasAfiladas.unidadesDeLucha(personaje)
 
 }
 
 object lanza {
 
-	method unidadesDeLucha(personaje) = 3
+	method unidadesDeLucha(personaje) = armasAfiladas.unidadesDeLucha(personaje)
 
 }
 
-object collarDivino {
+class CollarDivino {
 
 	var property cantidadDePerlas
+
+	constructor(_cantidadDePerlas) {
+		cantidadDePerlas = _cantidadDePerlas
+	}
 
 	method unidadesDeLucha(personaje) = self.cantidadDePerlas()
 
 }
 
-object mascaraOscura {
+class MascaraOscura {
 
 	var property indiceDeOscuridad
 	var property minimoDePoder
 
+	constructor(_indiceDeOscuridad, _minimoDePoder) {
+		indiceDeOscuridad = _indiceDeOscuridad
+		minimoDePoder = _minimoDePoder
+	}
+
 	method unidadesDeLucha(personaje) {
-		var valorDeLucha = personaje.valorFuerzaOscura() * 0.5 * self.indiceDeOscuridad()
+		var valorDeLucha = fuerzaOscura.valor() * 0.5 * self.indiceDeOscuridad()
 		if (valorDeLucha < self.minimoDePoder()) {
 			return self.minimoDePoder()
 		} else {
