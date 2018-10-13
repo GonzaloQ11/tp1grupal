@@ -15,6 +15,8 @@ class Armadura {
 	method unidadesDeLucha(personaje) {
 		return valorBase + refuerzo.unidadesDeLucha(personaje)
 	}
+	
+	method precio(personaje) = refuerzo.precio(personaje)
 
 }
 
@@ -28,11 +30,15 @@ class CotaDeMalla {
 
 	method unidadesDeLucha(personaje) = self.calidad()
 
+	method precio(personaje) = 0.5 * self.unidadesDeLucha(personaje)
+
 }
 
 object bendicion {
 
 	method unidadesDeLucha(personaje) = personaje.nivelHechiceria()
+
+	method precio(personaje) = 0.5 * self.unidadesDeLucha(personaje)
 
 }
 
@@ -52,6 +58,8 @@ object sinRefuerzo {
 
 	method unidadesDeLucha(personaje) = 0
 
+	method precio(personaje) = 2
+
 }
 
 object espejo {
@@ -62,6 +70,7 @@ object espejo {
 
 	method unidadesDeLucha(personaje) = self.maximoObjeto(personaje).unidadesDeLucha(personaje)
 
+	method precio(personaje) = 90
 }
 
 object libroDeHechizos {
@@ -80,6 +89,12 @@ object libroDeHechizos {
 		var hechizosPoderosos = listaDeHechizos.filter({ hechizo => hechizo.esPoderoso() })
 		return hechizosPoderosos.sum({ hechizo => hechizo.poder() })
 	}
-
+	
+	method precio(personaje){
+		
+		return self.listaDeHechizos().size()+self.poder()
+	
+	}
+	
 }
 

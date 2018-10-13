@@ -1,39 +1,40 @@
 import Base.*
 import hechizos.*
 
-object armasAfiladas {
+class ArmasAfiladas {
 
 	method unidadesDeLucha(personaje) = 3
 
-}
-
-object espada {
-
-	method unidadesDeLucha(personaje) = armasAfiladas.unidadesDeLucha(personaje)
+	method precio(personaje) = 5 * self.unidadesDeLucha(personaje)
 
 }
 
-object hacha {
-
-	method unidadesDeLucha(personaje) = armasAfiladas.unidadesDeLucha(personaje)
+//borrar?
+object espada inherits ArmasAfiladas {
 
 }
 
-object lanza {
+object hacha inherits ArmasAfiladas {
 
-	method unidadesDeLucha(personaje) = armasAfiladas.unidadesDeLucha(personaje)
+}
+
+object lanza inherits ArmasAfiladas {
 
 }
 
 class CollarDivino {
 
-	var property cantidadDePerlas
+	var cantidadDePerlas
 
 	constructor(_cantidadDePerlas) {
 		cantidadDePerlas = _cantidadDePerlas
 	}
 
+	method cantidadDePerlas() = cantidadDePerlas
+
 	method unidadesDeLucha(personaje) = self.cantidadDePerlas()
+
+	method precio(personaje) = 2 * self.cantidadDePerlas()
 
 }
 

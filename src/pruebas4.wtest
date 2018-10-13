@@ -1,0 +1,73 @@
+import Base.*
+import hechizos.*
+import lucha.*
+import habilidadesAvanzadas.*
+
+describe "pruebas 4" {
+
+	const hechizoLogos = new Logos("alacachula cachicomula")
+	const xenia = new Personaje(hechizoLogos)
+	const thor = new Personaje(hechizoBasico)
+	const loki = new Personaje(hechizoBasico, 5)
+
+	test "precio hechizo logo" {
+		assert.equals(22, hechizoLogos.precio(xenia))
+	}
+
+	test "cambiar hechizo por basico" {
+		xenia.cambioHechizo(hechizoBasico)
+		assert.equals(100, xenia.monedasDeOro())
+	}
+
+	test "canjear basico por logos" {
+		thor.cambioHechizo(hechizoLogos)
+		assert.equals(83, thor.monedasDeOro())
+	}
+
+	test "canjear dos veces hechizo basico" {
+		thor.cambioHechizo(hechizoBasico)
+		thor.cambioHechizo(hechizoBasico)
+		assert.equals(90, thor.monedasDeOro())
+	}
+
+	test "loki compra"{
+		assert.throwsExceptionLike(
+			 new UserException("no hay suficiente plata"),
+			 {loki.cambioHechizo(hechizoLogos)}
+		)
+	}
+
+	test"xenia va de shopping" {
+		const armaduraBasica = new Armadura(2, sinRefuerzo)
+		const collarDe5Perlas = new CollarDivino(5)
+		const cotaDeMallaCalidad5 = new CotaDeMalla(5)
+		const armaduraConCotaDeMalla = new Armadura(2, cotaDeMallaCalidad5)
+		xenia.comprarArtefacto(espada)
+		xenia.comprarArtefacto(collarDe5Perlas)
+		xenia.comprarArtefacto(armaduraBasica)
+		xenia.comprarArtefacto(armaduraConCotaDeMalla)
+		assert.equals(70.5, xenia.monedasDeOro())
+	}
+
+	test "Xenia tiene 4 artefactos" {
+		const armaduraBasica = new Armadura(2, sinRefuerzo)
+		const collarDe5Perlas = new CollarDivino(5)
+		const cotaDeMallaCalidad5 = new CotaDeMalla(5)
+		const armaduraConCotaDeMalla = new Armadura(2, cotaDeMallaCalidad5)
+		xenia.comprarArtefacto(espada)
+		xenia.comprarArtefacto(collarDe5Perlas)
+		xenia.comprarArtefacto(armaduraBasica)
+		xenia.comprarArtefacto(armaduraConCotaDeMalla)
+		assert.equals(4, xenia.artefactos().size())
+	}
+
+	test "thor armadura con bendicion" {
+		const armaduraConBendicion = new Armadura(2, bendicion)
+		const armaduraConHechizo = new Armadura(2, hechizoLogos)
+		thor.comprarArtefacto(armaduraConBendicion)
+		thor.comprarArtefacto(armaduraConHechizo)
+		assert.equals(74, thor.monedasDeOro())
+	}
+
+}
+
