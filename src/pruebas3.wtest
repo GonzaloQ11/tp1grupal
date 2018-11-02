@@ -10,6 +10,7 @@ describe "Tests de Habilidades Avanzadas" {
 	const armaduraBasica = new Armadura(2, sinRefuerzo)
 	const collarDivinoDe5Perlas = new CollarDivino(5)
 	const mascaraOscura = new MascaraOscura(1, 4)
+	const espada = new ArmaAfilada()
 
 	fixture {
 		rolando.agregarArtefacto(espada)
@@ -17,6 +18,11 @@ describe "Tests de Habilidades Avanzadas" {
 		rolando.agregarArtefacto(mascaraOscura)
 		rolando.agregarArtefacto(armaduraBasica)
 		rolando.agregarArtefacto(espejo)
+	}
+
+	method unidadesDeLuchaConNuevoRefuerzo(valorEsperado, refuerzo) {
+		armaduraBasica.refuerzo(refuerzo)
+		assert.equals(valorEsperado, armaduraBasica.unidadesDeLucha(rolando))
 	}
 
 	test "Rolando esta cargado" {
@@ -32,29 +38,24 @@ describe "Tests de Habilidades Avanzadas" {
 		assert.equals(20, rolando.valorDeLucha())
 	}
 
+///////////////
 	test "La habilidad de lucha de la armadura de Rolando con una bendicion de refuerzo es de 58" {
-		armaduraBasica.refuerzo(bendicion)
-		assert.equals(58, armaduraBasica.unidadesDeLucha(rolando))
+		self.unidadesDeLuchaConNuevoRefuerzo(58, new Bendicion())
 	}
 
 	test "La habilidad de lucha de la armadura de Rolando con una Cota de Malla de refuerzo es de 3" {
-		const cotaDeMallaCalidad1 = new CotaDeMalla(1)
-		armaduraBasica.refuerzo(cotaDeMallaCalidad1)
-		assert.equals(3,armaduraBasica.unidadesDeLucha(rolando))
+		self.unidadesDeLuchaConNuevoRefuerzo(3, new CotaDeMalla(1))
 	}
-	
-	test "La habilidad de lucha de la armadura de Rolando con un hechiso basico de refuerzo es de 12"{
-		const refuerzoHechizoBasico = new RefuerzoHechizo(hechizoBasico)
-		armaduraBasica.refuerzo(refuerzoHechizoBasico)
-		assert.equals(12,armaduraBasica.unidadesDeLucha(rolando))
+
+	test "La habilidad de lucha de la armadura de Rolando con un hechiso basico de refuerzo es de 12" {
+		self.unidadesDeLuchaConNuevoRefuerzo(12, new RefuerzoHechizo(hechizoBasico))
 	}
 
 	test "El valor de lucha de Rolando con una armadura con hechizo de bendicion es de 19" {
-		const refuerzoMalefico = new RefuerzoHechizo(espectroMalefico)
-		armaduraBasica.refuerzo(refuerzoMalefico)
-		assert.equals(19, armaduraBasica.unidadesDeLucha(rolando))
+		self.unidadesDeLuchaConNuevoRefuerzo(19, new RefuerzoHechizo(espectroMalefico))
 	}
 
+/////////////////////
 	test "El valor de lucha de Rolando al eliminar todos los Artefactos es de 1" {
 		rolando.eliminarTodosLosArtefactos()
 		assert.equals(1, rolando.valorDeLucha())

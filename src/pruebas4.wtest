@@ -8,7 +8,12 @@ describe "pruebas 4" {
 	const hechizoLogos = new Logos("alacachula cachicomula")
 	const xenia = new Personaje(hechizoLogos)
 	const thor = new Personaje(hechizoBasico)
-	const loki = new Personaje(hechizoBasico, 5)
+	const loki = new Personaje(hechizoBasico)
+	const espada = new ArmaAfilada()
+
+	fixture {
+		loki.monedasDeOro(5)
+	}
 
 	test "precio hechizo logo" {
 		assert.equals(22, hechizoLogos.precio(xenia))
@@ -30,11 +35,8 @@ describe "pruebas 4" {
 		assert.equals(90, thor.monedasDeOro())
 	}
 
-	test "loki compra"{
-		assert.throwsExceptionLike(
-			 new UserException("no hay suficiente plata"),
-			 {loki.cambioHechizo(hechizoLogos)}
-		)
+	test "loki compra" {
+		assert.throwsExceptionLike(new UserException("No hay suficientes monedas"), { loki.cambioHechizo(hechizoLogos)})
 	}
 
 	test"xenia va de shopping" {
@@ -62,11 +64,26 @@ describe "pruebas 4" {
 	}
 
 	test "thor armadura con bendicion" {
+		const bendicion = new Bendicion()
 		const armaduraConBendicion = new Armadura(2, bendicion)
-		const armaduraConHechizo = new Armadura(2, hechizoLogos)
+		bendicion.armadura(armaduraConBendicion)
+		const refuerzoLogos = new RefuerzoHechizo(hechizoLogos)
+		const armaduraConHechizo = new Armadura(2, refuerzoLogos)
+		refuerzoLogos.armadura(armaduraConHechizo)
 		thor.comprarArtefacto(armaduraConBendicion)
 		thor.comprarArtefacto(armaduraConHechizo)
 		assert.equals(74, thor.monedasDeOro())
+	}
+
+	test"loki compra espejo" {
+		assert.throwsExceptionLike(new UserException("No hay suficientes monedas"), { loki.comprarArtefacto(espejo)})
+	}
+
+	test"Xenia canjea un libro de hechizos" {
+		libroDeHechizos.agregarHechizo(hechizoLogos)
+		libroDeHechizos.agregarHechizo(hechizoBasico)
+		xenia.cambioHechizo(libroDeHechizos)
+		assert.equals(69, xenia.monedasDeOro())
 	}
 
 }
