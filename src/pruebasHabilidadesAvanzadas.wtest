@@ -2,11 +2,12 @@ import Base.*
 import hechizos.*
 import lucha.*
 import habilidadesAvanzadas.*
+import luchaYHechiceriaEnComercio.*
 
 describe "Tests de Habilidades Avanzadas" {
 
 	const espectroMalefico = new Logos("espectro malefico")
-	const rolando = new Personaje(espectroMalefico)
+	const rolando = new Personaje(espectroMalefico,100000)
 	const armaduraBasica = new Armadura(2, sinRefuerzo)
 	const collarDivinoDe5Perlas = new CollarDivino(5)
 	const mascaraOscura = new MascaraOscura(1, 4)

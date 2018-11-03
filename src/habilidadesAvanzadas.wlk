@@ -1,8 +1,9 @@
 import Base.*
 import hechizos.*
 import lucha.*
+import luchaYHechiceriaEnComercio.*
 
-class Armadura {
+class Armadura inherits Artefacto {
 
 	var property valorBase
 	var property refuerzo
@@ -18,6 +19,8 @@ class Armadura {
 
 	method precio(personaje) = refuerzo.precio(personaje)
 
+	override method pesoTotal(personaje) = super(personaje) + refuerzo.peso()
+
 }
 
 class CotaDeMalla {
@@ -32,6 +35,8 @@ class CotaDeMalla {
 
 	method precio(personaje) = 0.5 * self.unidadesDeLucha(personaje)
 
+	method peso() = 1
+
 }
 
 class Bendicion {
@@ -41,6 +46,8 @@ class Bendicion {
 	method unidadesDeLucha(personaje) = personaje.nivelHechiceria()
 
 	method precio(personaje) = armadura.valorBase()
+
+	method peso() = 0
 
 }
 
@@ -57,6 +64,10 @@ class RefuerzoHechizo {
 
 	method precio(personaje) = armadura.valorBase() + hechizo.precio(personaje)
 
+	method peso() {
+		if (hechizo.poder().even()) return 2 else return 1
+	}
+
 }
 
 object sinRefuerzo {
@@ -65,9 +76,11 @@ object sinRefuerzo {
 
 	method precio(personaje) = 2
 
+	method peso() = 0
+
 }
 
-object espejo {
+object espejo inherits Artefacto{
 
 	method artefactosSinEspejo(personaje) = personaje.artefactos().filter({ artefacto => artefacto != self })
 

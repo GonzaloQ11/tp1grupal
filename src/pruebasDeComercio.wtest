@@ -3,12 +3,12 @@ import hechizos.*
 import lucha.*
 import habilidadesAvanzadas.*
 
-describe "pruebas 4" {
+describe "Test de Comercio" {
 
 	const hechizoLogos = new Logos("alacachula cachicomula")
-	const xenia = new Personaje(hechizoLogos)
-	const thor = new Personaje(hechizoBasico)
-	const loki = new Personaje(hechizoBasico)
+	const xenia = new Personaje(hechizoLogos,50)
+	const thor = new Personaje(hechizoBasico,60)
+	const loki = new Personaje(hechizoBasico,55)
 	const espada = new ArmaAfilada()
 
 	fixture {

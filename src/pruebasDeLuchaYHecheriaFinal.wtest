@@ -1,0 +1,90 @@
+import Base.*
+import hechizos.*
+import lucha.*
+import habilidadesAvanzadas.*
+import luchaYHechiceriaEnComercio.*
+
+describe "Test de Comercio" {
+
+	const hechizoComercial = new HechizoComercial()
+	const nixiie = new Personaje(hechizoComercial, 10)
+	const bakmer = new Personaje(hechizoBasico, 15)
+	const swayy = new NPC(hechizoBasico, 20)
+	const collarDivinoDe5Perlas = new CollarDivino(5)
+	const mascaraOscura = new MascaraOscura(1, 4)
+	const armaduraConHechizoBasico = new Armadura(2, new RefuerzoHechizo(hechizoBasico))
+
+	fixture {
+		collarDivinoDe5Perlas.cargarPesoYDiasComprado(1, 700)
+		mascaraOscura.cargarPesoYDiasComprado(5, 300)
+		armaduraConHechizoBasico.cargarPesoYDiasComprado(10, 1200)
+		bakmer.agregarArtefacto(collarDivinoDe5Perlas)
+		bakmer.agregarArtefacto(mascaraOscura)
+		swayy.agregarArtefacto(armaduraConHechizoBasico)
+		swayy.agregarArtefacto(mascaraOscura)
+	}
+
+	// PUNTO 1
+	test "Hechizo comercial tiene un poder de 8" {
+		assert.equals(8, hechizoComercial.poder())
+	}
+
+	test "Hechizo comercial con un multiplicador de 4 tiene un poder de 16" {
+		hechizoComercial.amplificadorDePoder(4)
+		assert.equals(16, hechizoComercial.poder())
+	}
+
+	test "Hechizo comercial con un porcentaje de 30 tiene un poder de 12" {
+		hechizoComercial.porcentaje(30)
+		assert.equals(12, hechizoComercial.poder())
+	}
+
+	test "Hechizo comercial con un porcentaje de 10 y un multiplicador
+		 de 3 tiene un poder de 6" {
+		hechizoComercial.porcentaje(10)
+		hechizoComercial.amplificadorDePoder(3)
+		assert.equals(6, hechizoComercial.poder())
+	}
+
+	test "Hechizo comercial no es poderoso" {
+		assert.notThat(hechizoComercial.esPoderoso())
+	}
+
+	// PUNTO 2
+	test "el peso total de un collar divino de 5 perlas con 1kg y 700 dias es de 2.8" {
+		// PesoOriginal - Desgaste + BonusPorPerla
+		// 1 - 0.7 + (0.5*5)
+		assert.equals(2.8, collarDivinoDe5Perlas.pesoTotal(nixiie))
+	}
+
+	test "la mascara oscura tiene un peso total de 5.7" {
+		// PesoOriginal - Desgaste + BonusMascaraOscura
+		// 5 - 0.3 + (4-3)
+		assert.equals(5.7, mascaraOscura.pesoTotal(nixiie))
+	}
+
+	test "el peso de la armadura con hechizo basico es 11" {
+		// PesoOriginal - Desgaste + BonusMascaraOscura
+		// 5 - 0.3 + (4-3)
+		assert.equals(11, armaduraConHechizoBasico.pesoTotal(bakmer))
+	}
+
+	test "Bakmer no puede cargar una armadura con hechizo basico" {
+		// Peso maximo de Bakmer = 15
+		// Peso artefactos actual = 8.5 = 2.8 + 5.7
+		// Peso con ArmaduraBasica = 19.5 = 11 +8.5
+		assert.throwsExceptionLike(new UserException("El personaje no tiene suficiente peso disponible para agregarEsteArtefacto"), { bakmer.agregarArtefacto(armaduraConHechizoBasico)})
+	}
+
+	// PUNTO 3
+	test "el poder de lucha del npc swayy de dificultad dificil es de " {
+		// Valor de lucha Armadura 12
+		// valor de lucha mascaraOscura 4
+		// (artefactos+base)*bonusDificil = total
+		// (16+1)*4= 68
+		swayy.dificultad(dificil)
+		assert.equals(68, swayy.valorDeLucha())
+	}
+
+}
+

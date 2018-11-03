@@ -8,6 +8,11 @@ class Logos {
 		amplificadorDePoder = 1
 	}
 
+	constructor(_nombre, _amplificadorDePoder) {
+		nombre = _nombre
+		amplificadorDePoder = _amplificadorDePoder
+	}
+
 	method poder() = self.nombre().length() * self.amplificadorDePoder()
 
 	method esPoderoso() = self.poder() > 15
@@ -22,7 +27,8 @@ object hechizoBasico {
 
 	method esPoderoso() = false
 
-	method precio(personaje) = 10
+	method precio(personaje) = self.poder()
 
 }
+
 

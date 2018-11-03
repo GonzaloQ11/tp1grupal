@@ -1,11 +1,11 @@
-import Base.*
 import hechizos.*
 import lucha.*
+import Base.*
 
 describe "Tests de Hechiceria" {
 
 	const espectroMalefico = new Logos("espectro malefico")
-	const rolando = new Personaje(espectroMalefico)
+	const rolando = new Personaje(espectroMalefico,100)
 
 	test "El nivel de hechiceria de Rolando es de 56" {
 		assert.equals(56, rolando.nivelHechiceria())

@@ -1,5 +1,7 @@
 import hechizos.*
 import lucha.*
+import habilidadesAvanzadas.*
+import luchaYHechiceriaEnComercio.*
 
 class Personaje {
 
@@ -8,13 +10,15 @@ class Personaje {
 	var property baseLucha
 	var property artefactos
 	var property monedasDeOro
+	const cargaMaxima
 
-	constructor(_hechizoPreferido) {
+	constructor(_hechizoPreferido, _cargaMaxima) {
 		baseHechicheria = 3
 		hechizoPreferido = _hechizoPreferido
 		baseLucha = 1
 		artefactos = new List()
 		monedasDeOro = 100
+		cargaMaxima = _cargaMaxima
 	}
 
 	method nivelHechiceria() {
@@ -24,7 +28,13 @@ class Personaje {
 	method esPoderoso() = hechizoPreferido.esPoderoso()
 
 	// MENSAJES LUCHA
-	method agregarArtefacto(artefacto) = artefactos.add(artefacto)
+	method agregarArtefacto(artefacto) {
+		if (artefacto.pesoTotal(self) < self.pesoRestanteDisponible()) {
+			artefactos.add(artefacto)
+		} else {
+			throw new UserException("El personaje no tiene suficiente peso disponible para agregarEsteArtefacto")
+		}
+	}
 
 	method eliminarArtefacto(artefacto) = artefactos.remove(artefacto)
 
@@ -39,6 +49,7 @@ class Personaje {
 
 	method estaCargado() = self.artefactos().size() >= 5
 
+	// TP 2
 	method descuentoHechizo() = self.hechizoPreferido().precio(self) * 0.5
 
 	method pagarItem(item, descuento) {
@@ -53,14 +64,19 @@ class Personaje {
 	}
 
 	method cambioHechizo(nuevoHechizo) {
-		self.pagarItem(nuevoHechizo,self.descuentoHechizo())
+		self.pagarItem(nuevoHechizo, self.descuentoHechizo())
 		self.hechizoPreferido(nuevoHechizo)
 	}
 
 	method comprarArtefacto(nuevoArtefacto) {
-		self.pagarItem(nuevoArtefacto,0)
+		self.pagarItem(nuevoArtefacto, 0)
 		self.agregarArtefacto(nuevoArtefacto)
 	}
+
+	// TP 3
+	method cargaActual() = artefactos.sum({ artefacto => artefacto.pesoTotal(self) })
+
+	method pesoRestanteDisponible() = cargaMaxima - self.cargaActual()
 
 }
 

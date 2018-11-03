@@ -1,15 +1,16 @@
 import Base.*
 import hechizos.*
+import luchaYHechiceriaEnComercio.*
 
-class ArmaAfilada {
+class ArmaAfilada inherits Artefacto{
 
 	method unidadesDeLucha(personaje) = 3
 
-	method precio(personaje) = 5 * self.unidadesDeLucha(personaje)
+	method precio(personaje) = 5 * self.pesoTotal(personaje)
 
 }
 
-class CollarDivino {
+class CollarDivino inherits Artefacto{
 
 	var property cantidadDePerlas
 
@@ -20,10 +21,11 @@ class CollarDivino {
 	method unidadesDeLucha(personaje) = self.cantidadDePerlas()
 
 	method precio(personaje) = 2 * self.cantidadDePerlas()
-
+	
+	override method pesoTotal(personaje)= super(personaje) + cantidadDePerlas*0.5
 }
 
-class MascaraOscura {
+class MascaraOscura inherits Artefacto{
 
 	var property indiceDeOscuridad
 	var property minimoDePoder
@@ -41,6 +43,18 @@ class MascaraOscura {
 			return valorDeLucha
 		}
 	}
-
+	
+	override method pesoTotal(personaje){
+		const pesoAgregado = self.unidadesDeLucha(personaje)-3
+		if (pesoAgregado>0){
+			return super(personaje) + pesoAgregado
+		}
+		else{
+			return super(personaje)
+		}
+	} 
+	
+	method precio(personaje) =self.indiceDeOscuridad()*10
 }
+
 
