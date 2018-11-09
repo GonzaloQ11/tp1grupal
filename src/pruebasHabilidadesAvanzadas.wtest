@@ -7,7 +7,7 @@ import luchaYHechiceriaEnComercio.*
 describe "Tests de Habilidades Avanzadas" {
 
 	const espectroMalefico = new Logos("espectro malefico")
-	const rolando = new Personaje(espectroMalefico,100000)
+	const rolando = new Personaje(espectroMalefico, 100000)
 	const armaduraBasica = new Armadura(2, sinRefuerzo)
 	const collarDivinoDe5Perlas = new CollarDivino(5)
 	const mascaraOscura = new MascaraOscura(1, 4)
@@ -39,7 +39,6 @@ describe "Tests de Habilidades Avanzadas" {
 		assert.equals(20, rolando.valorDeLucha())
 	}
 
-///////////////
 	test "La habilidad de lucha de la armadura de Rolando con una bendicion de refuerzo es de 58" {
 		self.unidadesDeLuchaConNuevoRefuerzo(58, new Bendicion())
 	}
@@ -56,7 +55,6 @@ describe "Tests de Habilidades Avanzadas" {
 		self.unidadesDeLuchaConNuevoRefuerzo(19, new RefuerzoHechizo(espectroMalefico))
 	}
 
-/////////////////////
 	test "El valor de lucha de Rolando al eliminar todos los Artefactos es de 1" {
 		rolando.eliminarTodosLosArtefactos()
 		assert.equals(1, rolando.valorDeLucha())
@@ -74,6 +72,7 @@ describe "Tests de Habilidades Avanzadas" {
 	test "El valor de lucha de Rolando al agregar una armadura con valor de lucha base de 5 con una Cota de Malla de calidad 6 es de 37" {
 		const cotaDeMallaCalidad6 = new CotaDeMalla(6)
 		const armaduraExtra = new Armadura(5, cotaDeMallaCalidad6)
+		armaduraExtra.cargarPesoYDiasComprado(10, new Date(26, 07, 2015))
 		rolando.agregarArtefacto(armaduraExtra)
 		assert.equals(37, rolando.valorDeLucha())
 	}

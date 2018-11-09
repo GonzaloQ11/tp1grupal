@@ -13,7 +13,7 @@ class Logos {
 		amplificadorDePoder = _amplificadorDePoder
 	}
 
-	method poder() = self.nombre().length() * self.amplificadorDePoder()
+	method poder() = nombre.length() * amplificadorDePoder
 
 	method esPoderoso() = self.poder() > 15
 

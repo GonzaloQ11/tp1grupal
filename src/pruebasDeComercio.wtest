@@ -6,80 +6,86 @@ import habilidadesAvanzadas.*
 describe "Test de Comercio" {
 
 	const hechizoLogos = new Logos("alacachula cachicomula")
-	const xenia = new Personaje(hechizoLogos,50)
-	const thor = new Personaje(hechizoBasico,60)
-	const loki = new Personaje(hechizoBasico,55)
+	const xenia = new Personaje(hechizoLogos, 100)
+	const thor = new Personaje(hechizoBasico, 60)
+	const loki = new Personaje(hechizoBasico, 55)
 	const espada = new ArmaAfilada()
 
 	fixture {
+		espada.peso(3)
 		loki.monedasDeOro(5)
 	}
 
-	test "precio hechizo logo" {
+	method xeniaShopping() {
+		const armaduraBasica = new Armadura(2, sinRefuerzo)
+		const collarDe5Perlas = new CollarDivino(5)
+		const cotaDeMallaCalidad5 = new CotaDeMalla(5)
+		const armaduraConCotaDeMalla = new Armadura(2, cotaDeMallaCalidad5)
+		armaduraBasica.peso(1)
+		collarDe5Perlas.peso(5)
+		armaduraConCotaDeMalla.peso(10)
+		xenia.comprarArtefacto(espada)
+		xenia.comprarArtefacto(collarDe5Perlas)
+		xenia.comprarArtefacto(armaduraBasica)
+		xenia.comprarArtefacto(armaduraConCotaDeMalla)
+	}
+
+	test "El precio de un Hechizo Logos con nombre alacachula cachicomula
+			es de 22" {
 		assert.equals(22, hechizoLogos.precio(xenia))
 	}
 
-	test "cambiar hechizo por basico" {
+	test "A Xenia le quedan 100 monedas despues de canjear su hechizo por uno basico" {
 		xenia.cambioHechizo(hechizoBasico)
 		assert.equals(100, xenia.monedasDeOro())
 	}
 
-	test "canjear basico por logos" {
+	test "A thor le quedan 83 monedas despues de canjear el hechizo basico por el hechizo logos alacachula cachicomula" {
 		thor.cambioHechizo(hechizoLogos)
 		assert.equals(83, thor.monedasDeOro())
 	}
 
-	test "canjear dos veces hechizo basico" {
+	test "A thor le quedan 90 monedas despues de canjear el hechizo basico 2 veces" {
 		thor.cambioHechizo(hechizoBasico)
 		thor.cambioHechizo(hechizoBasico)
 		assert.equals(90, thor.monedasDeOro())
 	}
 
-	test "loki compra" {
-		assert.throwsExceptionLike(new UserException("No hay suficientes monedas"), { loki.cambioHechizo(hechizoLogos)})
+	test "Loki no puede canjear su hechizo basico por el hechizo logos alacachula cachicomula " {
+		assert.throwsExceptionLike(new UserException().noHaySuficientesMonedas(), { loki.cambioHechizo(hechizoLogos)})
 	}
 
-	test"xenia va de shopping" {
-		const armaduraBasica = new Armadura(2, sinRefuerzo)
-		const collarDe5Perlas = new CollarDivino(5)
-		const cotaDeMallaCalidad5 = new CotaDeMalla(5)
-		const armaduraConCotaDeMalla = new Armadura(2, cotaDeMallaCalidad5)
-		xenia.comprarArtefacto(espada)
-		xenia.comprarArtefacto(collarDe5Perlas)
-		xenia.comprarArtefacto(armaduraBasica)
-		xenia.comprarArtefacto(armaduraConCotaDeMalla)
+	test"Le quedan 70.5 monedas a Xenia despues de comprar una espada, un collar divino de 5 perslas, una armadura sin refuerzo
+		y otra armadura con malla de cota con valor 5" {
+		self.xeniaShopping()
 		assert.equals(70.5, xenia.monedasDeOro())
 	}
 
-	test "Xenia tiene 4 artefactos" {
-		const armaduraBasica = new Armadura(2, sinRefuerzo)
-		const collarDe5Perlas = new CollarDivino(5)
-		const cotaDeMallaCalidad5 = new CotaDeMalla(5)
-		const armaduraConCotaDeMalla = new Armadura(2, cotaDeMallaCalidad5)
-		xenia.comprarArtefacto(espada)
-		xenia.comprarArtefacto(collarDe5Perlas)
-		xenia.comprarArtefacto(armaduraBasica)
-		xenia.comprarArtefacto(armaduraConCotaDeMalla)
+	test "Xenia tiene 4 artefactos despues de comprar una espada, un collar divino de 5 perslas, una armadura sin refuerzo
+		y otra armadura con malla de cota con valor 5" {
+		self.xeniaShopping()
 		assert.equals(4, xenia.artefactos().size())
 	}
 
-	test "thor armadura con bendicion" {
+	test "Thor tiene 74 monedas despues de comprar una armadura con bendicion, una armadura con hechizo alacachula cachicomula" {
 		const bendicion = new Bendicion()
 		const armaduraConBendicion = new Armadura(2, bendicion)
 		bendicion.armadura(armaduraConBendicion)
 		const refuerzoLogos = new RefuerzoHechizo(hechizoLogos)
 		const armaduraConHechizo = new Armadura(2, refuerzoLogos)
 		refuerzoLogos.armadura(armaduraConHechizo)
+		armaduraConBendicion.peso(5)
+		armaduraConHechizo.peso(10)
 		thor.comprarArtefacto(armaduraConBendicion)
 		thor.comprarArtefacto(armaduraConHechizo)
 		assert.equals(74, thor.monedasDeOro())
 	}
 
-	test"loki compra espejo" {
-		assert.throwsExceptionLike(new UserException("No hay suficientes monedas"), { loki.comprarArtefacto(espejo)})
+	test"Loki trata de comprar un espejo y no puede" {
+		assert.throwsExceptionLike(new UserException().noHaySuficientesMonedas(), { loki.comprarArtefacto(espejo)})
 	}
 
-	test"Xenia canjea un libro de hechizos" {
+	test"Xenia canjea un libro de hechizos que tiene el hechizo logos alacachula cachicomula y un hechizo basico" {
 		libroDeHechizos.agregarHechizo(hechizoLogos)
 		libroDeHechizos.agregarHechizo(hechizoBasico)
 		xenia.cambioHechizo(libroDeHechizos)

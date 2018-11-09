@@ -4,7 +4,7 @@ import lucha.*
 import habilidadesAvanzadas.*
 import luchaYHechiceriaEnComercio.*
 
-describe "Test de Comercio" {
+describe "Test de Comercio Final" {
 
 	const hechizoComercial = new HechizoComercial()
 	const nixiie = new Personaje(hechizoComercial, 10)
@@ -13,16 +13,24 @@ describe "Test de Comercio" {
 	const collarDivinoDe5Perlas = new CollarDivino(5)
 	const mascaraOscura = new MascaraOscura(1, 4)
 	const armaduraConHechizoBasico = new Armadura(2, new RefuerzoHechizo(hechizoBasico))
+	const vendedorDeStormwind = new Comerciante(new Independiente(10))
+	const vendedorDeIronforge = new Comerciante(registrado)
+	const vendedorDeOrgrimmar = new Comerciante(impuestoGanancias)
+	const espada = new ArmaAfilada()
 
 	fixture {
-		collarDivinoDe5Perlas.cargarPesoYDiasComprado(1, 700)
-		mascaraOscura.cargarPesoYDiasComprado(5, 300)
-		armaduraConHechizoBasico.cargarPesoYDiasComprado(10, 1200)
+		collarDivinoDe5Perlas.cargarPesoYDiasComprado(1, self.fechaXDiasAntes(700))
+		mascaraOscura.cargarPesoYDiasComprado(5, self.fechaXDiasAntes(300))
+		armaduraConHechizoBasico.cargarPesoYDiasComprado(10, self.fechaXDiasAntes(1200))
 		bakmer.agregarArtefacto(collarDivinoDe5Perlas)
 		bakmer.agregarArtefacto(mascaraOscura)
 		swayy.agregarArtefacto(armaduraConHechizoBasico)
 		swayy.agregarArtefacto(mascaraOscura)
+		swayy.dificultad(dificil)
+		espada.peso(3)
 	}
+
+	method fechaXDiasAntes(diasAntes) = new Date().minusDays(diasAntes)
 
 	// PUNTO 1
 	test "Hechizo comercial tiene un poder de 8" {
@@ -73,17 +81,50 @@ describe "Test de Comercio" {
 		// Peso maximo de Bakmer = 15
 		// Peso artefactos actual = 8.5 = 2.8 + 5.7
 		// Peso con ArmaduraBasica = 19.5 = 11 +8.5
-		assert.throwsExceptionLike(new UserException("El personaje no tiene suficiente peso disponible para agregarEsteArtefacto"), { bakmer.agregarArtefacto(armaduraConHechizoBasico)})
+		assert.throwsExceptionLike(new UserException().sinPesoDisponible(), { bakmer.agregarArtefacto(armaduraConHechizoBasico)})
 	}
 
 	// PUNTO 3
-	test "el poder de lucha del npc swayy de dificultad dificil es de " {
+	test "el poder de lucha del npc swayy de dificultad dificil es de 68" {
 		// Valor de lucha Armadura 12
 		// valor de lucha mascaraOscura 4
 		// (artefactos+base)*bonusDificil = total
 		// (16+1)*4= 68
-		swayy.dificultad(dificil)
 		assert.equals(68, swayy.valorDeLucha())
+	}
+
+	test "el poder de lucha del npc swayy de dificultad facil es de 17" {
+		// Valor de lucha Armadura 12
+		// valor de lucha mascaraOscura 4
+		// (artefactos+base)*bonusDificil = total
+		// (16+1)*4= 68
+		swayy.dificultad(facil)
+		assert.equals(17, swayy.valorDeLucha())
+	}
+
+	// PUNTO  4
+	test "el precio de una espada de 3 kgs es de 15" {
+		assert.equals(15, espada.precio(bakmer))
+	}
+
+	test "el precio de venta de una espada de 3kg de un comerciante independiente con comision 10 es de 16.5" {
+		assert.equals(16.5, vendedorDeStormwind.venderArtefacto(espada, bakmer))
+	}
+
+	test "el precio de venta de un artefacto de un comerciante registrado es de 18.15" {
+		assert.equals(18.15, vendedorDeIronforge.venderArtefacto(espada, bakmer))
+	}
+
+	test "el precio de una espada de 10 kgs es de 50" {
+		espada.peso(10)
+		assert.equals(50, espada.precio(bakmer))
+	}
+
+	test "el precio de venta de un artefacto de un comerciante con impuesto a las ganancias con comision 10 aumenta en un 10" {
+		espada.peso(10)
+		// precio + bonus ((50-30)*0.35)
+		// 50 + (20*0.35)
+		assert.equals(57, vendedorDeOrgrimmar.venderArtefacto(espada, bakmer))
 	}
 
 }

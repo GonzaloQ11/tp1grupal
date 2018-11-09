@@ -2,6 +2,7 @@ import Base.*
 import hechizos.*
 import lucha.*
 import habilidadesAvanzadas.*
+import luchaYHechiceriaEnComercio.*
 
 class HechizoComercial inherits Logos {
 
@@ -17,31 +18,28 @@ class HechizoComercial inherits Logos {
 
 class Artefacto {
 
-	var property peso
-	var property diasComprado
+	var property peso = 1
+	var property diaDeCompra = new Date()
 
-	method pesoTotal(personaje) {
-		return peso - self.desgaste()
+	constructor() {
+		peso = 1
+		diaDeCompra = new Date()
 	}
 
-	// consulta abstraccion diasComprado
-	/*
-	 *  const diaDeCompra
-	 *  const hoy = new Date()
-	 *  method diasComprado() = hoy - diaDeCompra
-	 */
+	method diasComprado() = new Date() - diaDeCompra
+
 	method desgaste() {
-		const desgaste = diasComprado / 1000
-		if (desgaste > 1) {
-			return 1
-		} else {
-			return desgaste
-		}
+		var desgaste = self.diasComprado() / 1000
+		return desgaste.min(1)
 	}
-	
-	method cargarPesoYDiasComprado(_peso,_diasComprado){
-		peso =_peso
-		diasComprado =_diasComprado
+
+	method bonusPeso(personaje) = 0
+
+	method pesoTotal(personaje) = peso - self.desgaste() + self.bonusPeso(personaje)
+
+	method cargarPesoYDiasComprado(_peso, _diasComprado) {
+		peso = _peso
+		diaDeCompra = _diasComprado
 	}
 
 }
@@ -50,25 +48,31 @@ class NPC inherits Personaje {
 
 	var property dificultad
 
-	override method valorDeLucha() = super() * dificultad.bonus()
+	override method valorDeLucha() = super() * dificultad.incremento()
 
 }
 
-object facil {
+class Nivel {
+
+	method incremento() = 2 ** self.bonus()
+
+}
+
+object facil inherits Nivel {
+
+	method bonus() = 0
+
+}
+
+object moderado inherits Nivel {
 
 	method bonus() = 1
 
 }
 
-object moderado {
+object dificil inherits Nivel {
 
 	method bonus() = 2
-
-}
-
-object dificil {
-
-	method bonus() = 4
 
 }
 
@@ -76,17 +80,27 @@ class Comerciante {
 
 	var property situacionImpositiva
 
-	method recategorizacionCompulsiva() {
-		self.situacionImpositiva(self.situacionImpositiva().cambio())
+	constructor(_situacionImpositiva) {
+		situacionImpositiva = _situacionImpositiva
 	}
+
+	method venderArtefacto(artefacto,personaje) {
+		return artefacto.precio(personaje) + (self.situacionImpositiva().aumento(artefacto,personaje)/100)
+	}
+
+	method recategorizacionCompulsiva() = self.situacionImpositiva(self.situacionImpositiva().cambio())
 
 }
 
-object independiente {
+class Independiente {
 
 	var property comision
-
-	method aumento() = comision
+	
+	constructor (_comision){
+		comision = _comision
+	}
+	
+	method aumento(artefacto,personaje) =  artefacto.precio(personaje) * comision
 
 	method cambio() {
 		if (self.comision() * 2 > 21) {
@@ -101,15 +115,29 @@ object independiente {
 
 object registrado {
 
-	method aumento() = 21
+	method aumento(artefacto,personaje) = artefacto.precio(personaje) * 21
 
 	method cambio() = impuestoGanancias
 
 }
-// ni idea
+
 object impuestoGanancias {
 
+	method aumento(artefacto,personaje) {
+		if (artefacto.precio(personaje) < impuestoMinimoNoImponible.valor()) {
+			return 0
+		} else {
+			return (artefacto.precio(personaje) - impuestoMinimoNoImponible.valor()) * 35
+		}
+	}
+
 	method cambio() = self
+
+}
+
+object impuestoMinimoNoImponible {
+
+	var property valor = 30
 
 }
 

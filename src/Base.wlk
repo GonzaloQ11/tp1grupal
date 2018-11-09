@@ -21,18 +21,15 @@ class Personaje {
 		cargaMaxima = _cargaMaxima
 	}
 
-	method nivelHechiceria() {
-		return (baseHechicheria * hechizoPreferido.poder()) + fuerzaOscura.valor()
-	}
+	method nivelHechiceria() = baseHechicheria * hechizoPreferido.poder() + fuerzaOscura.valor()
 
 	method esPoderoso() = hechizoPreferido.esPoderoso()
 
-	// MENSAJES LUCHA
 	method agregarArtefacto(artefacto) {
 		if (artefacto.pesoTotal(self) < self.pesoRestanteDisponible()) {
 			artefactos.add(artefacto)
 		} else {
-			throw new UserException("El personaje no tiene suficiente peso disponible para agregarEsteArtefacto")
+			throw new UserException().sinPesoDisponible()
 		}
 	}
 
@@ -54,11 +51,11 @@ class Personaje {
 
 	method pagarItem(item, descuento) {
 		const precioConDescuento = item.precio(self) - descuento
-		if (precioConDescuento > self.monedasDeOro()) {
-			throw new UserException("No hay suficientes monedas")
+		if (precioConDescuento > monedasDeOro) {
+			throw new UserException().noHaySuficientesMonedas()
 		}
-		const resultadoMonedas = self.monedasDeOro() - precioConDescuento
-		if (resultadoMonedas < self.monedasDeOro()) {
+		const resultadoMonedas = monedasDeOro - precioConDescuento
+		if (resultadoMonedas < monedasDeOro) {
 			self.monedasDeOro(resultadoMonedas)
 		}
 	}
@@ -69,6 +66,7 @@ class Personaje {
 	}
 
 	method comprarArtefacto(nuevoArtefacto) {
+		nuevoArtefacto.diaDeCompra(new Date())
 		self.pagarItem(nuevoArtefacto, 0)
 		self.agregarArtefacto(nuevoArtefacto)
 	}
@@ -91,6 +89,13 @@ object fuerzaOscura {
 }
 
 class UserException inherits Exception {
+
+	const sinPesoDisponible = "El personaje no tiene suficiente peso disponible para agregarEsteArtefacto"
+	const noHaySuficientesMonedas = "No hay suficientes monedas"
+
+	method sinPesoDisponible() = sinPesoDisponible
+
+	method noHaySuficientesMonedas() = noHaySuficientesMonedas
 
 }
 

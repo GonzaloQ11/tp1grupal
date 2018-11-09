@@ -8,14 +8,12 @@ class Armadura inherits Artefacto {
 	var property valorBase
 	var property refuerzo
 
-	constructor(_valorBase, _refuerzo) {
+	constructor(_valorBase, _refuerzo) = super() {
 		valorBase = _valorBase
 		refuerzo = _refuerzo
 	}
 
-	method unidadesDeLucha(personaje) {
-		return valorBase + refuerzo.unidadesDeLucha(personaje)
-	}
+	method unidadesDeLucha(personaje) = valorBase + refuerzo.unidadesDeLucha(personaje)
 
 	method precio(personaje) = refuerzo.precio(personaje)
 
@@ -31,7 +29,7 @@ class CotaDeMalla {
 		calidad = _calidad
 	}
 
-	method unidadesDeLucha(personaje) = self.calidad()
+	method unidadesDeLucha(personaje) = calidad
 
 	method precio(personaje) = 0.5 * self.unidadesDeLucha(personaje)
 
@@ -65,7 +63,7 @@ class RefuerzoHechizo {
 	method precio(personaje) = armadura.valorBase() + hechizo.precio(personaje)
 
 	method peso() {
-		if (hechizo.poder().even()) return 2 else return 1
+		return if (hechizo.poder().even()) 2 else 1
 	}
 
 }
@@ -80,7 +78,7 @@ object sinRefuerzo {
 
 }
 
-object espejo inherits Artefacto{
+object espejo inherits Artefacto {
 
 	method artefactosSinEspejo(personaje) = personaje.artefactos().filter({ artefacto => artefacto != self })
 

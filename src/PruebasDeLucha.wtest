@@ -1,11 +1,12 @@
 import Base.*
 import hechizos.*
 import lucha.*
+import luchaYHechiceriaEnComercio.*
 
 describe "Tests de Lucha" {
 
 	const espectroMalefico = new Logos("espectro malefico")
-	const rolando = new Personaje(espectroMalefico,100)
+	const rolando = new Personaje(espectroMalefico, 100)
 	const collarDivinoDe5Perlas = new CollarDivino(5)
 	const mascaraOscura = new MascaraOscura(1, 4)
 	const espada = new ArmaAfilada()
@@ -45,7 +46,6 @@ describe "Tests de Lucha" {
 		assert.equals(9, rolando.valorDeLucha())
 	}
 
-	//
 	test "Las unidades de lucha de una mascara oscura de Rolando al cambiar el indice de oscuridad a 0 es de 4" {
 		mascaraOscura.indiceDeOscuridad(0)
 		assert.equals(4, mascaraOscura.unidadesDeLucha(rolando))
